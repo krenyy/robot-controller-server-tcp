@@ -129,9 +129,11 @@ impl RobotController {
         match self.receive::<MAX_LENGTH, 1>().await {
             Ok(msg) => match msg {
                 ClientMessage::Recharging => {
+                    tracing::trace!("recharging!");
                     if self.wait_for_recharging().await.is_none() {
                         return None;
                     }
+                    tracing::trace!("full power!");
                     self.get::<MAX_LENGTH>().await
                 }
                 ClientMessage::FullPower => {
